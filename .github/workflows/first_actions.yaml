@@ -1,0 +1,33 @@
+---
+name: My First Github-Project
+
+on:
+  [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10"]
+  
+    steps:
+      - name: SCM checkout
+        uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install -upgrade pip
+          pip install pytest
+      
+      - name: Run tests
+        shell: bash
+        run: |
+          cd src
+          python -m pytest addition.py
